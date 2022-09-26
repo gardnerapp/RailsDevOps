@@ -1,0 +1,22 @@
+- name: Ensure 'devs' group exists
+  group:
+    name: devs
+    state: present
+
+- name: Create 'deploy' user
+    user:
+      name: deploy
+      shell: /bin/bash
+      password: # TODO create hash w linux default hash algorithim
+
+- name: Assign 'deploy' to 'devs' group
+  user:
+    name: deploy
+    groups: devs
+    append: yes
+
+- name: Create a sample_app directory
+  file:
+    path: /home/deploy/sample_app # double check path
+    mode: 0750 # User -> rwx, owner -> write, exectute
+    groupd: developers

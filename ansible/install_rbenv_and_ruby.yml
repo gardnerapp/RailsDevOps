@@ -1,0 +1,20 @@
+- name: Install rbenv & Ruby 3.1.1
+  script: "./scripts/install_rbenv.sh"
+  # todo add params/configs for dynamically installing different versions of ruby
+
+- name: Assert rbenv is present
+  package:
+    name: rbenv
+    state: present
+
+- name: Assert Ruby 3.1.1 is installed
+  package:
+    name: ruby
+    state: present
+
+# Todo install ansible gem management modules
+- name: Install bundler
+  community.general.gem:
+    name: bundler
+    version: 2.3
+    state: present
