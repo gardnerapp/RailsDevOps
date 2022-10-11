@@ -1,12 +1,12 @@
 - name: Create 'devs' group
-    group:
-      name: devs
+  group:
+    name: devs
 
 - name: Create 'deploy' user
-    user:
-      name: deploy
-      groups: devs, sudo
-      append: yes #adds user to devs & sudo group
-      shell: /bin/bash
-      password: $1$dmB/l/Ra$d6UbYY8iCymTHmlVKEV3G.
+  user:
+    name: deploy
+    groups: devs, sudo
+    append: yes #adds user to devs & sudo group
+    shell: /bin/bash
+    password: $1$dmB/l/Ra$d6UbYY8iCymTHmlVKEV3G.
       # openssl passwd -1 P@ssworD123--
