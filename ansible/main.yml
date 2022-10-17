@@ -7,7 +7,7 @@
     tasks:
       - import_tasks: password_management.yml
       - import_tasks: create_deploy_user.yml
-      - import_tasks: install_rbenv_and_ruby.yml
+      - import_tasks: rails_dependencies.yml
       # import_tasks: install_nginx_and_passenger.yml
       # import_tasks: configure_server.yml
       # import_tasks: install_postgres.yml
