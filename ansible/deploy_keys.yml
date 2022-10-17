@@ -1,0 +1,5 @@
+- name: Add local SSH pubkey to deploy user
+  authorized_key:
+    user: deploy
+    state: present
+    key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}" 
