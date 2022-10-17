@@ -9,8 +9,18 @@
     #  - import_tasks: create_deploy_user.yml
        - import_tasks: deploy_keys.yml
     #  - import_tasks: rails_dependencies.yml
-      - import_tasks: ruby_version_manager.yml
       # import_tasks: install_nginx_and_passenger.yml
       # import_tasks: configure_server.yml
       # import_tasks: install_postgres.yml
       # import_tasks: configure_postgres.yml
+
+# https://stackoverflow.com/questions/46352173/ansible-failed-to-set-permissions-on-the-temporary
+# try creating a seperate playboook with a remote user of deploy
+
+  - name: Provision Server as Deploy
+    hosts: all
+    become: yes
+    become_method: sudo
+    remote_user: deploy
+    tasks:
+      - import_tasks: ruby_version_manager.yml
