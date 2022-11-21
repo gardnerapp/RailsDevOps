@@ -1,0 +1,62 @@
+---
+  - name: APP STUB | Dependencies
+    apt: pkg={{ item }} state=present force="yes" update_cache="yes"
+    when: ansible_system == "Linux"
+    with_items: "{{app_dependencies}}"
+    become: yes
+    tags: app_stub
+
+  - name: APP STUB | Install gem dependencies
+    shell: "gem install --no-rdoc --no-ri {{item}}"
+    with_items:
+      - sqlite3
+    become: yes
+    tags: app_stub
+
+  - name: APP STUB | Re-create base app directory
+    file: path={{app_base_dir}} state=absent
+    become: yes
+    tags: app_stub
+
+  - name: APP Stub | Create directories
+    file: path={{item}} state=directory mode=0755 owner={{ansible_user_id}}
+    group={{ansible_user_id}}
+    with_items: "{{app_directories}}"
+    become: yes
+    tags: app_stub
+
+  - name: APP STUB | Checkout app without key
+    git: repo="{{app_repository}}" dest="{{app_base_dir}}"
+    accept_hostkey="yes" force="yes"
+    when: app_repository_keyname is not defined
+    tags: app_stub
+
+  - name: APP Stub | Install global rails gem
+    shell: gem install --no-rdoc --no-ri rails
+    become: yes
+    tags: app_stub
+
+    # Alot of shit was elimated form original tutorial becasue my system isnt usin it
+
+  - name: APP STUB | DB Migrate
+    shell: bundle ecec rake db:migrate
+    args:
+      chdir: "{{app_base_dir}}"
+    environment:
+      RAILS_ENV: "{{app_env}}"
+      DATABASE_URL: ""postgres://{{app_db_user}};{{app_db_password}}@{{app_db_host}}/{{app_db_name}}
+      SECRET_KEY_BASE: "{{app_secret}}"
+      DOMAIN_NAME: "{{app_domain}}"
+    tags: app_stub
+
+  - name: APP STUB | Nginx conf
+    template: src="{{root_dir}}/templates/nginx_app.conf.j2" dest="/etc/nginx/sites-enabled/{{app_short_name}}.conf"
+    become: yes
+    tags: app_stub
+
+  - name: Nginx | Reload
+    service: name=nginx state=reloaded
+    become: yes
+    tags: app_stub
+
+    

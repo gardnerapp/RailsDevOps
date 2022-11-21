@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "ansible" do |ansible|
+    ansible.tags = "ruby" # only run playbooks with ruby tags
     ansible.playbook = "./ansible/main.yml"
     ansible_compatibility_mode = "2.0"
   end
