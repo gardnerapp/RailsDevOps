@@ -5,7 +5,7 @@
       path: /usr/local/bin/chruby-exec
     register: chruby
     tags: ruby # tags are only used to run specifc parts of the playbooks
-    
+
 
 #  - name: Report if chruby is present
 #    debug:
@@ -17,27 +17,27 @@
 #      msg: Chruby is missing
   #  when: not chruby_present.stat.exists
 
-  - name: Ruby | Download chruby distribution
+  - name: Download chruby distribution
     get_url: url="http://github.com/postmodern/chruby/archive/v{{ chruby_version }}.tar.gz"
       dest="/tmp/chruby-{{ chruby_version }}.tar.gz"
     when: not chruby.stat.exists
     tags: ruby
 
-  - name: Ruby | unpack chruby
+  - name: Unpack chruby
     command: tar xf "/tmp/chruby-{{ chruby_version }}.tar.gz"
     args:
       chdir: "/tmp"
-  #  when: chruby_present|failed
+    when: not chruby.stat.exists
     tags: ruby
 
-  - name: Ruby | chruby install target
+  - name: Chruby install target
     command: make install
       chdir="tmp/chruby-{{ chruby_version }}"
     become: yes
-  #  when: chruby_present | failed
+    when: not chruby.stat.exists
     tags: ruby
 
-  - name: Ruby | autoload script
-    template: src="{{role_dir}}/templates/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
+  - name: Autoload Chruby script
+    template: src="/templates/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
     become: yes
     tags: ruby

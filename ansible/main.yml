@@ -17,6 +17,8 @@
     become: yes
     become_method: sudo
     remote_user: deploy
+    vars: # creates variables which can be used in templates
+      chruby_version: 0.3.9
     tasks:
       - import_tasks: chruby_install.yml
 
