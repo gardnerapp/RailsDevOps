@@ -1,7 +1,0 @@
-- name: Clone rbenv repository from git
-  become_user: deploy
-  git:
-    repo: https://github.com/rbenv/rbenv.git
-    dest: /home/deploy/.rbenv
-    clone: yes
-    update: yes
