@@ -19,7 +19,9 @@
     remote_user: deploy
     vars: # creates variables which can be used in templates
       chruby_version: 0.3.9
+      ruby_install_version: 0.8.5
     tasks:
       - import_tasks: chruby_install.yml
+      - import_tasks: ruby_install_install.yml
 
 # in vagrant file you specified ansible.tags = "ruby" to only run ruby tags

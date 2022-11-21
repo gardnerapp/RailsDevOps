@@ -1,17 +1,17 @@
 ---
-  # checks if the ruby install tool is present
-  - name: Ruby | Check if ruby_install is present
-    shell: test -x /usr/local/bin/ruby-install
-    when: ansible_system == "Linux"
+  - name: Check if ruby-install is present
+    stat:
+      path: /usr/local/bin/ruby-install
+  #  when: ansible_system == "Linux"
     ignore_errors: yes
     register: rubyinstall_present
     tags: ruby
 
-  - name: Ruby | Ruby install | package dependencies
-    apt: pkg={{ item }} state: present force="yes" update_cache="yes"
-    when: ansible_system == "Linux"
+  - name: Package dependencies for ruby-install
+    apt: pkg={{ item }} state=present force="yes" update_cache="yes"
+  #  when: ansible_system == "Linux"
     with_items:
-      - buil-essentials
+      - build-essentials
       - libffi-dev
       - libgdbm-dev
       - libncurses5-dev
@@ -22,29 +22,27 @@
     become: yes
     tags: ruby
 
-  - name: Ruby | Download ruby_install
+  - name: Download ruby-install
     get_url: url="https://github.com/postmodern/ruby-install/archive/v{{ ruby_install_version }}.tar.gz"
       dest=/tmp/ruby-install-{{ ruby_install_version }}.tar.gz
-    when: rubyinstall_present | failed
+    when: not rubyinstall_present.stat.exists
     tags: ruby
 
   - name: Ruby | Unpack ruby-install
     command: tar xf /tmp/ruby-install-{{ruby_install_version }}.tar.gz
       chdir=/tmp
-    when: rubyinstall_present | failed
+    when: not rubyinstall_present.stat.exists
     tags: ruby
 
   - name: Ruby | Run ruby-install install target
     command: make install
       chdir=/tmp/ruby-install-{{ruby_install_version }}
-    when: rubyinstall_present | failed
+    when: not rubyinstall_present.stat.exists
     become: yes
     tags: ruby
 
   - name: Ruby | Download list of rubies available
     command: ruby-install
-    when: rubyinstall_present | failed
+    when: not rubyinstall_present.stat.exists
     become: yes
     tags: ruby
-
-    
