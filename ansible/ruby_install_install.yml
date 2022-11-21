@@ -11,12 +11,12 @@
     apt: pkg={{ item }} state=present force="yes" update_cache="yes"
   #  when: ansible_system == "Linux"
     with_items:
-      - build-essentials
+      - build-essentials #err
       - libffi-dev
       - libgdbm-dev
       - libncurses5-dev
       - libreadline-dev
-      - libreadlin6-dev
+      - libreadline6-dev #err
       - libtinfo-dev
       - libyaml-dev
     become: yes
