@@ -32,12 +32,12 @@
 
   - name: Chruby install target
     command: make install
-      chdir="tmp/chruby-{{ chruby_version }}"
+      chdir="/tmp/chruby-{{ chruby_version }}"
     become: yes
     when: not chruby.stat.exists
     tags: ruby
 
   - name: Autoload Chruby script
-    template: src="/templates/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
+    template: src="./templates/ch_ruby.sh.j2" dest=/etc/profile.d/chruby.sh
     become: yes
     tags: ruby
