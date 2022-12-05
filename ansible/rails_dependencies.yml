@@ -1,27 +1,33 @@
 - name: Add NodeJS Repository
   shell: curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - # could not use command module because command does not accept shell characters
+  tags: rails
 
 - name: Install NodeJS
   apt:
     name: nodejs
     update_cache: yes
+  tags: rails
 
 - name: Download Yarn Repository
   shell: curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+  tags: rails
 
 - name: Add Yarn to apt sourcelist
   shell: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  tags: rails
 
 - name: Install Yarn
   apt:
     name: yarn
     state: present
     update_cache: yes
+  tags: rails
 
 - name: Add Redis to APT Package list
   apt_repository:
     repo: ppa:chris-lea/redis-server
     state: present
+  tags: rails
 
 - name: Install Redis
   apt:
@@ -30,6 +36,7 @@
       - redis-tools
     state: present
     update_cache: yes
+  tags: rails
 
 - name: Refresh Package List & Install Dependencies
   apt:
@@ -52,3 +59,4 @@
       - apt-transport-https
       - ca-certificates
     update_cache: yes
+  tags: rails 

@@ -11,7 +11,7 @@
     apt: pkg={{ item }} state=present force="yes" update_cache="yes"
   #  when: ansible_system == "Linux"
     with_items:
-      - build-essentials #err
+      - build-essential 
       - libffi-dev
       - libgdbm-dev
       - libncurses5-dev
